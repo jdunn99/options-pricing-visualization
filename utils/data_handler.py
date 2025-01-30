@@ -20,7 +20,11 @@ def read_csv(ticker: str):
     filtered_data = chunk.loc[(chunk.index >= stop) & (chunk.index <= today)]
     data.append(filtered_data)
   
-  return pd.concat(data)
+  result = pd.concat(data)
+  result["Test"] = pd.to_datetime(result.index, utc=True)
+  print(result["Test"])
+
+  return result
 
 def parse_to_csv(ticker: str):
   """Parses yfinance data to a CSV

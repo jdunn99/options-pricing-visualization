@@ -11,17 +11,18 @@ class PricingChart(Subchart):
     self.indicators.append(indicator)
 
   def plot(self, data: pd.DataFrame, figure: go.Figure):
+
     figure.add_trace(go.Candlestick(
-      x=data.index,
+      x=data["Test"],
       open=data["Open"],
       close=data["Close"],
       high=data["High"],
       low=data["Low"],
-      name="Price",
       ),
       row=1,
       col=1
     )
+ 
 
     for indicator in self.indicators:
       indicator.plot(data, figure)

@@ -19,13 +19,12 @@ class ChartManager:
 
   def show(self):
     self.figure.update_layout(
-      xaxis_title="Date",
-      showlegend=False,
-      yaxis_title="Price",
-      xaxis=dict(rangeslider=dict(visible=False)),
-      autosize=True,
-      margin_t=20,
-      height=700
+        xaxis_title="Date",
+        showlegend=False,
+        yaxis_title="Price",
+        xaxis=dict(rangeslider=dict(visible=False), ticks="inside", showticklabels=True),
+        height=700,
+        margin_t=40
     )
     st.plotly_chart(self.figure)
 class Subchart(ABC):
