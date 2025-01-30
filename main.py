@@ -1,11 +1,20 @@
-from utils.data_handler import get_data
-from charts.chart_factory import ChartFactory
-import pandas as pd
+import streamlit as st
+from utils.data_handler import fetch_data
+from components.layout import base_layout, sidebar
+from plotly.subplots import make_subplots
+
+title = "Stock Analysis"
 
 if __name__ == "__main__":
-  data = get_data(["VTI","VXUS", "BND"], start="2024-01-01", end="2025-01-01")
-  candlestick = ChartFactory.get_chart("candlestick")
+  figure = make_subplots(
+    rows=2,
+    cols=1,
+    vertical_spacing=0.1,
+    shared_xaxes=True,
+    row_heights=[0.75, 0.25]
+  )
 
-  for ticker, df in data.items():
-    print(df.head)
-    candlestick.create_chart(ticker, data=df)
+  base_layout(title)
+  manager = sidebar(title, figure)
+  if manager:
+    manager.show()
