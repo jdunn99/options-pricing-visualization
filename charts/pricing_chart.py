@@ -1,13 +1,16 @@
 from charts.chart import Subchart
 import pandas as pd
 import plotly.graph_objects as go
+from indicators.indicator import Indicator
 
 class PricingChart(Subchart):
   def __init__(self):
     self.indicators = []
+    
+  def add_indicator(self, indicator: Indicator):
+    self.indicators.append(indicator)
 
   def plot(self, data: pd.DataFrame, figure: go.Figure):
-    print(f"Plotting {data}")
     figure.add_trace(go.Candlestick(
       x=data.index,
       open=data["Open"],
@@ -19,3 +22,6 @@ class PricingChart(Subchart):
       row=1,
       col=1
     )
+
+    for indicator in self.indicators:
+      indicator.plot(data, figure)

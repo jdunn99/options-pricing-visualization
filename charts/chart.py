@@ -13,7 +13,7 @@ class ChartManager:
     self.sub_charts.append(sub_chart)
   
   def update_data(self, new_data: pd.DataFrame):
-    self.data = new_data
+    self.data = self.data.dropna()
     for sub_chart in self.sub_charts:
       sub_chart.plot(self.data, self.figure)
 
