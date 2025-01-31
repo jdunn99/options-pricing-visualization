@@ -10,7 +10,6 @@ class MovingAverageIndicator(Indicator):
 
   def apply(self, data: pd.DataFrame):
     data[self.key] = data['Close'].rolling(window=self.window).mean()
-    return data
 
   def plot(self, data, figure):
      figure.add_trace(go.Scatter(

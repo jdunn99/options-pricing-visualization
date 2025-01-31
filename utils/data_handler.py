@@ -14,6 +14,7 @@ def read_csv(ticker: str):
   data = []
 
   for chunk in pd.read_csv(f"./data/{ticker}_data.csv", chunksize=1000, parse_dates=["Date"], index_col="Date"):
+    
     if chunk.index[0] > today:
       break
 
@@ -21,17 +22,24 @@ def read_csv(ticker: str):
     data.append(filtered_data)
   
   result = pd.concat(data)
-  result["Test"] = pd.to_datetime(result.index, utc=True)
-  print(result["Test"])
+  # result["Test"] = pd.to_datetime(result.index, utc=True)
+  # print(result["Test"])
 
   return result
 
 def parse_to_csv(ticker: str):
   """Parses yfinance data to a CSV
-  """
-  history = yf.Ticker(ticker).history(period="max")
-  history.to_csv(f"./data/{ticker}_data.csv")
 
+  TODO: Handle errors for tickers that don't exist
+  """
+  print("AYO")
+  history = yf.Ticker(ticker).history(period="max")
+  print("HISTORY:", history)
+
+  if history.empty:
+    raise ValueError(f"Invalid ticker {ticker}")
+
+  history.to_csv(f"./data/{ticker}_data.csv")
   return read_csv(ticker)
 
 def fetch_data(ticker: str):

@@ -12,11 +12,18 @@ class ChartManager:
   def add_subchart(self, sub_chart):
     self.sub_charts.append(sub_chart)
   
-  def update_data(self, new_data: pd.DataFrame):
+  def render(self):
+    self.data = self.data.dropna()
+    for sub_chart in self.sub_charts:
+      for indicator in sub_chart.indicators:
+        indicator.apply(self.data)
+        
     self.data = self.data.dropna()
     for sub_chart in self.sub_charts:
       sub_chart.plot(self.data, self.figure)
-
+      for indicator in sub_chart.indicators:
+        indicator.plot(self.data, self.figure)
+       
   def show(self):
     self.figure.update_layout(
         xaxis_title="Date",

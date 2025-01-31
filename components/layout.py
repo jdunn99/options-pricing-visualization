@@ -21,12 +21,10 @@ def sidebar(title: str, figure: go.Figure):
       manager.add_subchart(pricing_chart)
       short_mva = MovingAverageIndicator(name="Short MVA", key="Short")
       long_mva = MovingAverageIndicator(name="Long MVA", key="Long", window=50)
-      # manager.data = short_mva.apply(manager.data)
-      # manager.data = long_mva.apply(manager.data)
 
-      # pricing_chart.add_indicator(short_mva)
-      # pricing_chart.add_indicator(long_mva)
+      pricing_chart.add_indicator(short_mva)
+      pricing_chart.add_indicator(long_mva)
 
-      manager.update_data(manager.data)
+      manager.render()
 
       return manager
