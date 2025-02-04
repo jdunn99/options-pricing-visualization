@@ -4,10 +4,11 @@ from abc import ABC, abstractmethod
 import streamlit as st
 
 class ChartManager:
-  def __init__(self, data: pd.DataFrame, figure: go.Figure):
+  def __init__(self, data: pd.DataFrame, figure: go.Figure, ticker: str):
     self.data = data
     self.figure = figure 
     self.sub_charts = []
+    self.ticker = ticker
 
   def add_subchart(self, sub_chart):
     self.sub_charts.append(sub_chart)
@@ -27,10 +28,12 @@ class ChartManager:
   def show(self):
     self.figure.update_layout(
         xaxis_title="Date",
-        yaxis_title="Price",
+        yaxis1_title="Price",
+        yaxis2_title="RSI",
+        yaxis3_title="Volatility",
         xaxis=dict(rangeslider=dict(visible=False), ticks="inside", showticklabels=True),
         height=1080,
-        margin_t=40
+        margin_t=20
     )
     st.plotly_chart(self.figure)
 class Subchart(ABC):

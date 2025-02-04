@@ -19,6 +19,7 @@ def set_moving_averages_state():
   else:
     temp["Short MVA"] = MovingAverageIndicator(name="Short MVA", key="Short")
     temp["Long MVA"] = MovingAverageIndicator(name="Long MVA", key="Long", window=50)
+
 class IndicatorExpander:
   def __init__(self):
     with st.expander("Indicators", True):

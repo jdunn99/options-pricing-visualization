@@ -16,8 +16,9 @@ def sidebar(title: str, figure: go.Figure):
     st.title(title)
     ticker = st.text_input(label="Ticker", placeholder="Ticker")
     if ticker:
-      data = fetch_data(ticker)
-      manager = ChartManager(data, figure)
+
+      data = fetch_data(ticker, st.session_state.period)
+      manager = ChartManager(data, figure, ticker)
 
       pricing_chart = PricingChart()
       manager.add_subchart(pricing_chart)

@@ -1,7 +1,7 @@
 import yfinance as yf
 import pandas as pd
 
-def read_csv(ticker: str):
+def read_csv(ticker: str, period):
   """Reads and parses a CSV file in chunks 
 
   Args:
@@ -10,21 +10,20 @@ def read_csv(ticker: str):
     Pandas DataFrame of the parsed CSV on the given time period.
   """
   today = pd.Timestamp.now(tz="US/Eastern")
-  stop = today - pd.Timedelta(days=365)
+  stop = today - pd.Timedelta(days=period)
+  print(today, stop)
   data = []
 
-  for chunk in pd.read_csv(f"./data/{ticker}_data.csv", chunksize=1000, parse_dates=["Date"], index_col="Date"):
-    
-    if chunk.index[0] > today:
-      break
+  if period == -1:
+    return pd.read_csv(f"./data/{ticker}_data.csv", parse_dates=["Date"], index_col="Date")
+
+  for chunk in pd.read_csv(f"./data/{ticker}_data.csv", chunksize=500, parse_dates=["Date"], index_col="Date"):
+
 
     filtered_data = chunk.loc[(chunk.index >= stop) & (chunk.index <= today)]
     data.append(filtered_data)
   
   result = pd.concat(data)
-  # result["Test"] = pd.to_datetime(result.index, utc=True)
-  # print(result["Test"])
-
   return result
 
 def parse_to_csv(ticker: str):
@@ -40,9 +39,8 @@ def parse_to_csv(ticker: str):
     raise ValueError(f"Invalid ticker {ticker}")
 
   history.to_csv(f"./data/{ticker}_data.csv")
-  return read_csv(ticker)
 
-def fetch_data(ticker: str):
+def fetch_data(ticker: str, period=365):
   """Fetches data either by reading from CSV or requesting the Yahoo Finance API.
 
   CSV files hold the Max. We need to parse them accordingly to the period.
@@ -52,7 +50,8 @@ def fetch_data(ticker: str):
     period: The period which the data will be queried from.
   """
   try:
-    return read_csv(ticker)
+    return read_csv(ticker, period)
   except Exception as e:
     print(f"Could not find {ticker}_data.csv. Falling back to yfinance API. Error: {e}")
-    return parse_to_csv(ticker)
+    parse_to_csv(ticker)
+    return read_csv(ticker, period)
