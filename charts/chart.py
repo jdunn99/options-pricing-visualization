@@ -27,12 +27,12 @@ class ChartManager:
        
   def show(self):
     self.figure.update_layout(
-        xaxis_title="Date",
+        # xaxis3_title="Date",
         yaxis1_title="Price",
         yaxis2_title="RSI",
         yaxis3_title="Volatility",
         xaxis=dict(rangeslider=dict(visible=False), ticks="inside", showticklabels=True),
-        height=1080,
+        height=800,
         margin_t=20
     )
     st.plotly_chart(self.figure)
