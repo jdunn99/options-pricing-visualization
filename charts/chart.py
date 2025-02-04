@@ -32,7 +32,7 @@ class ChartManager:
         yaxis2_title="RSI",
         yaxis3_title="Volatility",
         xaxis=dict(rangeslider=dict(visible=False), ticks="inside", showticklabels=True),
-        height=800,
+        height=800 if st.session_state.width <= 1440 else 1080,
         margin_t=20
     )
     st.plotly_chart(self.figure)
