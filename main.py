@@ -59,10 +59,13 @@ if __name__ == "__main__":
 
     keys = periods.keys()
     col1, _ = st.columns([1, 3])
+    
+    st.markdown('<span id="test"></span>', unsafe_allow_html=True)
     cols = col1.columns(len(keys))
 
     for i, key in enumerate(keys):
       with cols[i]:
+        st.markdown('<span id="button-after"></span>', unsafe_allow_html=True)
         st.button(key, use_container_width=True, type="primary" if st.session_state.period == periods[key] else "secondary", on_click=set_state, args=[key])
 
   if manager:

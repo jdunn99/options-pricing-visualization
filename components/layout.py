@@ -9,6 +9,21 @@ from components.volatility_expander import VolatilityExpander
 
 def base_layout(title: str):
   st.set_page_config(layout="wide")
+  st.markdown("""
+                    <style>
+                      .element-container:has(#button-after) + div button {
+                        padding: 0!important;
+                        font-size: 12px!important;
+                        width: 90%;
+                      }
+
+                      .stHorizontalBlock div  {
+                        font-size: 12px!important;
+                        gap: 0;
+                        flex: none;
+                      }
+                    </style>
+                    """, unsafe_allow_html=True)
   st.title(title)
 
 def sidebar(title: str, figure: go.Figure):
