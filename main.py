@@ -1,7 +1,8 @@
 import streamlit as st
-from components.layout import base_layout, sidebar
-from plotly.subplots import make_subplots
 from streamlit_js_eval import streamlit_js_eval
+from plotly.subplots import make_subplots
+from components.layout import base_layout, sidebar
+import streamlit.components.v1 as components
 
 title = "Stock Analysis"
 
@@ -29,7 +30,7 @@ if __name__ == "__main__":
     st.session_state.period = 365
 
   if "width" not in st.session_state:
-    st.session_state.width = streamlit_js_eval(js_expressions='screen.width', key = 'SCR')
+    st.session_state.width = 0
 
   figure = make_subplots(
     rows=3,
@@ -37,7 +38,7 @@ if __name__ == "__main__":
     vertical_spacing=0.08,
     shared_xaxes=True,
     subplot_titles=st.session_state.titles,
-    row_heights=[0.5, 0.25, 0.25]
+    row_heights=[0.5, 0.25, 0.25] if st.session_state.width <= 1400 else [0.7, 0.15, 0.15]
   )
 
   base_layout(title)
@@ -65,6 +66,8 @@ if __name__ == "__main__":
     
     st.markdown('<span id="test"></span>', unsafe_allow_html=True)
     cols = col1.columns(len(keys))
+
+    st.write(st.session_state.width)
 
     for i, key in enumerate(keys):
       with cols[i]:
