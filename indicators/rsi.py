@@ -1,6 +1,6 @@
-from indicators.indicator import Indicator
 import plotly.graph_objects as go
 import pandas as pd
+from indicators.indicator import Indicator
 
 class RSIIndicator(Indicator):
   def __init__(self, period=14):

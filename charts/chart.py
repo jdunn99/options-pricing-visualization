@@ -27,10 +27,9 @@ class ChartManager:
   def show(self):
     self.figure.update_layout(
         xaxis_title="Date",
-        showlegend=False,
         yaxis_title="Price",
         xaxis=dict(rangeslider=dict(visible=False), ticks="inside", showticklabels=True),
-        height=700,
+        height=1080,
         margin_t=40
     )
     st.plotly_chart(self.figure)
