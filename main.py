@@ -52,14 +52,15 @@ if __name__ == "__main__":
       diff = today_close - yesterday_close
       percent_change = (abs(diff) / ((today_close + yesterday_close) / 2)) * 100
 
+      r_today = round(today_close, 2)
       r_diff = round(diff, 2)
       r_pc = f"({round(percent_change, 2)})%"
 
       n = f":red[{r_diff} {r_pc}]" if diff < 0 else f":green[+{r_diff} {r_pc}]"
 
-      st.subheader(f"Market Summary - {manager.ticker} {n}")
+      st.subheader(f"Market Summary - {manager.ticker} ${r_today} {n}")
     else:
-      st.subheader(f"Market Summary - {manager.ticker}")
+      st.subheader(f"Market Summary - {manager.ticker} ${r_today}")
 
     keys = periods.keys()
     col1, _ = st.columns([1, 1 if st.session_state.width <= 1440 else 2])
