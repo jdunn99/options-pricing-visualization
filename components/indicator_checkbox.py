@@ -11,22 +11,30 @@ indicators = {
   "Bollinger Bands": BollingerBandsIndicator,
 }
 
-def set_state(indicator):
-  temp = st.session_state.indicators
-  titles = st.session_state.titles
+def set_state(indicator, chart_name):
+  temp = st.session_state[chart_name]["indicators"]
+  # titles = st.session_state.titles
   if indicator in temp:
-    obj = temp[indicator] 
-    del obj
-    del temp[indicator]
-
-    if indicator == "RSI":
-      st.session_state.titles = ("Candlestick", "", titles[2])
-    else:
-      st.session_state.titles = ("Candlestick", titles[1], "")
+    temp[indicator]["active"] = False
   else:
-    temp[indicator] = indicators[indicator]()
-    if indicator == "RSI":
-      st.session_state.titles = ("Candlestick", "RSI", titles[2])
-    else:
-      st.session_state.titles = ("Candlestick", titles[1], "Volatility")
-  st.session_state.indicators = temp
+    temp[indicator] = {
+      "ref": indicators[indicator](),
+      "active": True
+    }
+
+  # if indicator in temp:
+  #   obj = temp[indicator] 
+  #   del obj
+  #   del temp[indicator]
+
+  # #   if indicator == "RSI":
+  # #     st.session_state.titles = ("Candlestick", "", titles[2])
+  # #   else:
+  # #     st.session_state.titles = ("Candlestick", titles[1], "")
+  # # else:
+  # #   temp[indicator] = indicators[indicator]()
+  # #   if indicator == "RSI":
+  # #     st.session_state.titles = ("Candlestick", "RSI", titles[2])
+  # #   else:
+  # #     st.session_state.titles = ("Candlestick", titles[1], "Volatility")
+  # st.session_state.indicators = temp

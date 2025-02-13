@@ -1,7 +1,8 @@
 import yfinance as yf
 import pandas as pd
+import streamlit as st
 
-def read_csv(ticker: str, period):
+def read_csv(ticker: str):
   """Reads and parses a CSV file in chunks 
 
   Args:
@@ -10,11 +11,11 @@ def read_csv(ticker: str, period):
     Pandas DataFrame of the parsed CSV on the given time period.
   """
   today = pd.Timestamp.now(tz="US/Eastern")
-  stop = today - pd.Timedelta(days=period)
+  stop = today - pd.Timedelta(days=st.session_state.period)
   print(today, stop)
   data = []
 
-  if period == -1:
+  if st.session_state.period == -1:
     return pd.read_csv(f"./data/{ticker}_data.csv", parse_dates=["Date"], index_col="Date")
 
   for chunk in pd.read_csv(f"./data/{ticker}_data.csv", chunksize=500, parse_dates=["Date"], index_col="Date"):
@@ -40,7 +41,7 @@ def parse_to_csv(ticker: str):
 
   history.to_csv(f"./data/{ticker}_data.csv")
 
-def fetch_data(ticker: str, period=365):
+def fetch_data():
   """Fetches data either by reading from CSV or requesting the Yahoo Finance API.
 
   CSV files hold the Max. We need to parse them accordingly to the period.
@@ -49,9 +50,10 @@ def fetch_data(ticker: str, period=365):
     ticker: The stock symbol we are querying.
     period: The period which the data will be queried from.
   """
+  ticker = st.session_state.ticker
   try:
-    return read_csv(ticker, period)
+    return read_csv(ticker)
   except Exception as e:
     print(f"Could not find {ticker}_data.csv. Falling back to yfinance API. Error: {e}")
     parse_to_csv(ticker)
-    return read_csv(ticker, period)
+    return read_csv(ticker)

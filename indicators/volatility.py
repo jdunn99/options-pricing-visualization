@@ -45,7 +45,7 @@ class EWMAIndicator(Indicator):
   def __init__(self, span=20):
     self.span = span
 
-  def apply(self, data: pd.DataFrame):
+  def apply(self):
     calculate_log_returns(data, self.span)
     data["EWMA"] = data["Log Returns"].ewm(span=self.span).std()
 
